@@ -1,35 +1,45 @@
+require('./src/env.js');
+// require('./src/db/create.js');
+// require('./src/db/insert.js');
 const express = require('express');
 const app = express();
-const cors = require('cors');
+const axios = require('axios'); 
 
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server,{
-  cors: {
-    origin: '*'
-  }
-});
+async function bla() {
+    await require('./src/db/create.js');
+    // await require('./src/db/insert.js');
+}
 
-const clients = {};
-const messages = [];
+bla();
 
-io.on('connection', (socket) => {
-  console.log('Новое подключение Socket.io');
+// const http = require('http');
+// const server = http.createServer(app);
+// const { Server } = require("socket.io");
+// const io = new Server(server,{
+//   cors: {
+//     origin: '*'
+//   }
+// });
 
-  // Отправляем текущие сообщения клиенту при подключении
-  socket.emit('initialMessages', messages);
+// const clients = {};
+// const messages = [];
 
-  socket.on('sendMessage', (message) => {
-    messages.push(message);
-    io.emit('newMessage', message); // Рассылка нового сообщения всем клиентам
-  });
+// io.on('connection', (socket) => {
+//   console.log('Новое подключение Socket.io');
 
-  socket.on('disconnect', () => {
-    console.log('Socket.io соединение закрыто');
-  });
-});
+//   socket.emit('initialMessages', messages);
 
-server.listen(3000, () => {
-  console.log('Сервер запущен на порту 3000');
-});
+//   socket.on('sendMessage', (message) => {
+//     console.log(message)
+//     messages.push(message);
+//     io.emit('newMessage', message);
+//   });
+
+//   socket.on('disconnect', () => {
+//     console.log('Socket.io соединение закрыто');
+//   });
+// });
+
+// server.listen(3000, () => {
+//   console.log('Сервер запущен на порту 3000');
+// });
